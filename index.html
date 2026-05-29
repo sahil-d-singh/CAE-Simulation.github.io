@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sahildeep Singh — Engineering Simulation Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy:  #0D1F3C;
+    --mid:   #1B3A6B;
+    --red:   #C0392B;
+    --amber: #E67E22;
+    --teal:  #1A7F8A;
+    --cream: #F8F5F0;
+    --text:  #1C2536;
+    --muted: #64748B;
+    --border:#DDE1EA;
+    --bg:    #FFFFFF;
+    --card:  #FAFBFD;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+
+  /* ── Hero ── */
+  .hero {
+    background: var(--navy);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 8vw;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,.03) 0px, rgba(255,255,255,.03) 1px, transparent 1px, transparent 80px),
+      repeating-linear-gradient(0deg,  rgba(255,255,255,.03) 0px, rgba(255,255,255,.03) 1px, transparent 1px, transparent 80px);
+    pointer-events: none;
+  }
+  .hero-tag { font-family:'DM Mono',monospace; font-size:.75rem; letter-spacing:.18em; color:var(--amber); text-transform:uppercase; margin-bottom:24px; opacity:0; animation:fadeUp .6s ease forwards .2s; }
+  .hero h1  { font-family:'DM Serif Display',serif; font-size:clamp(2.6rem,6vw,5rem); color:#fff; line-height:1.05; margin-bottom:20px; opacity:0; animation:fadeUp .7s ease forwards .4s; }
+  .hero h1 em { font-style:italic; color:var(--amber); }
+  .hero-sub { font-size:1.05rem; color:rgba(255,255,255,.65); max-width:560px; line-height:1.7; margin-bottom:40px; opacity:0; animation:fadeUp .7s ease forwards .6s; }
+  .hero-links { display:flex; gap:16px; flex-wrap:wrap; opacity:0; animation:fadeUp .7s ease forwards .8s; }
+  .hero-links a { font-family:'DM Mono',monospace; font-size:.8rem; letter-spacing:.06em; padding:10px 22px; border-radius:3px; text-decoration:none; transition:all .2s; }
+  .btn-primary { background:var(--red); color:#fff; border:2px solid var(--red); }
+  .btn-primary:hover { background:#a93226; border-color:#a93226; }
+  .btn-outline { background:transparent; color:rgba(255,255,255,.8); border:1px solid rgba(255,255,255,.25); }
+  .btn-outline:hover { border-color:rgba(255,255,255,.7); color:#fff; }
+  .hero-scroll { position:absolute; bottom:32px; left:8vw; display:flex; align-items:center; gap:10px; font-family:'DM Mono',monospace; font-size:.7rem; color:rgba(255,255,255,.35); letter-spacing:.12em; opacity:0; animation:fadeIn 1s ease forwards 1.4s; }
+  .hero-scroll::before { content:''; display:block; width:40px; height:1px; background:rgba(255,255,255,.25); }
+
+  /* ── Section ── */
+  .section { padding: 100px 8vw; }
+  .section-alt { background: var(--cream); }
+  .section-label { font-family:'DM Mono',monospace; font-size:.72rem; letter-spacing:.18em; color:var(--red); text-transform:uppercase; margin-bottom:10px; }
+  .section-title { font-family:'DM Serif Display',serif; font-size:clamp(1.8rem,3.5vw,2.8rem); color:var(--navy); line-height:1.15; margin-bottom:56px; }
+
+  /* ── Cards ── */
+  .projects-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:2px; }
+  .card { background:var(--card); border:1px solid var(--border); overflow:hidden; display:flex; flex-direction:column; transition:transform .25s, box-shadow .25s; position:relative; }
+  .card:hover { transform:translateY(-4px); box-shadow:0 16px 48px rgba(13,31,60,.12); z-index:2; }
+  .card-accent { height:4px; width:100%; }
+  .card:nth-child(1) .card-accent { background:var(--red); }
+  .card:nth-child(2) .card-accent { background:var(--teal); }
+  .card:nth-child(3) .card-accent { background:var(--amber); }
+  .card:nth-child(4) .card-accent { background:var(--mid); }
+  .card:nth-child(5) .card-accent { background:#7B3FA0; }
+  .card:nth-child(6) .card-accent { background:#2E7D32; }
+  .card:nth-child(7) .card-accent { background:#B7410E; }
+
+  /* Media zone */
+  .card-media { position:relative; width:100%; aspect-ratio:16/9; background:#e8ecf2; overflow:hidden; flex-shrink:0; }
+  .card-media img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .4s; cursor:zoom-in; }
+  .card:hover .card-media img { transform:scale(1.04); }
+  .card-media video { width:100%; height:100%; object-fit:cover; display:block; }
+
+  /* Photo strips */
+  .photo-strip { display:flex; gap:2px; flex-shrink:0; }
+  .photo-slot { flex:1; aspect-ratio:1; background:#dde2ed; overflow:hidden; position:relative; cursor:zoom-in; transition:background .2s; }
+  .photo-slot:hover { background:#cdd4e8; }
+  .photo-slot img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .3s; }
+  .photo-slot:hover img { transform:scale(1.08); }
+
+  /* Card body */
+  .card-body { padding:24px 28px 28px; flex:1; display:flex; flex-direction:column; }
+  .card-tag { font-family:'DM Mono',monospace; font-size:.68rem; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:10px; }
+  .card-title { font-family:'DM Serif Display',serif; font-size:1.22rem; color:var(--navy); line-height:1.3; margin-bottom:14px; }
+  .card-bullets { list-style:none; display:flex; flex-direction:column; gap:8px; flex:1; }
+  .card-bullets li { font-size:.85rem; color:var(--muted); line-height:1.6; padding-left:14px; position:relative; }
+  .card-bullets li::before { content:'—'; position:absolute; left:0; color:var(--border); font-size:.8rem; }
+  .card-tools { display:flex; gap:6px; flex-wrap:wrap; margin-top:20px; padding-top:18px; border-top:1px solid var(--border); }
+  .tool-tag { font-family:'DM Mono',monospace; font-size:.66rem; padding:4px 9px; border-radius:2px; background:#ECF0FA; color:var(--mid); letter-spacing:.04em; }
+
+  /* ── About Strip ── */
+  .about-strip { display:grid; grid-template-columns:1fr 1fr 1fr; gap:2px; }
+  .about-stat { padding:48px 40px; background:var(--navy); color:#fff; }
+  .about-stat:nth-child(2) { background:var(--mid); }
+  .about-stat:nth-child(3) { background:var(--red); }
+  .about-stat-num { font-family:'DM Serif Display',serif; font-size:3rem; margin-bottom:8px; }
+  .about-stat-label { font-size:.85rem; opacity:.75; line-height:1.5; }
+
+  /* ── Contact ── */
+  .contact-row { display:flex; gap:40px; flex-wrap:wrap; align-items:flex-start; }
+  .contact-item { display:flex; flex-direction:column; gap:4px; }
+  .contact-item-label { font-family:'DM Mono',monospace; font-size:.68rem; letter-spacing:.14em; color:var(--muted); text-transform:uppercase; }
+  .contact-item-value { font-size:1rem; color:var(--navy); font-weight:500; text-decoration:none; }
+  .contact-item-value:hover { color:var(--red); }
+
+  /* ── Footer ── */
+  footer { background:var(--navy); padding:36px 8vw; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:16px; }
+  footer span { font-family:'DM Mono',monospace; font-size:.72rem; color:rgba(255,255,255,.35); letter-spacing:.06em; }
+
+  /* ── Animations ── */
+  @keyframes fadeUp { from { opacity:0; transform:translateY(24px); } to { opacity:1; transform:translateY(0); } }
+  @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+  .reveal { opacity:0; transform:translateY(30px); transition:opacity .6s ease, transform .6s ease; }
+  .reveal.visible { opacity:1; transform:translateY(0); }
+
+  /* ── LIGHTBOX ── */
+  #lightbox {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.92);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+    cursor: zoom-out;
+  }
+  #lightbox.active { display: flex; }
+  #lightbox img {
+    max-width: 92vw;
+    max-height: 90vh;
+    object-fit: contain;
+    border-radius: 3px;
+    box-shadow: 0 32px 80px rgba(0,0,0,.6);
+    cursor: default;
+    animation: lbIn .2s ease;
+  }
+  @keyframes lbIn { from { opacity:0; transform:scale(.94); } to { opacity:1; transform:scale(1); } }
+  #lb-close {
+    position: fixed;
+    top: 22px; right: 28px;
+    color: rgba(255,255,255,.7);
+    font-size: 2rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    line-height: 1;
+    transition: color .15s;
+  }
+  #lb-close:hover { color: #fff; }
+  #lb-nav-prev, #lb-nav-next {
+    position: fixed;
+    top: 50%; transform: translateY(-50%);
+    color: rgba(255,255,255,.5);
+    font-size: 2.4rem;
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 12px 18px;
+    transition: color .15s;
+    user-select: none;
+  }
+  #lb-nav-prev { left: 16px; }
+  #lb-nav-next { right: 16px; }
+  #lb-nav-prev:hover, #lb-nav-next:hover { color: #fff; }
+  #lb-counter {
+    position: fixed;
+    bottom: 20px; left: 50%;
+    transform: translateX(-50%);
+    font-family: 'DM Mono', monospace;
+    font-size: .72rem;
+    color: rgba(255,255,255,.4);
+    letter-spacing: .1em;
+  }
+
+  /* ── Responsive ── */
+  @media (max-width: 700px) {
+    .about-strip { grid-template-columns: 1fr; }
+    .projects-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <button id="lb-close">✕</button>
+  <button id="lb-nav-prev">‹</button>
+  <img id="lb-img" src="" alt="">
+  <button id="lb-nav-next">›</button>
+  <div id="lb-counter"></div>
+</div>
+
+<!-- ═══ HERO ═══════════════════════════════════════════════════════ -->
+<section class="hero">
+  <p class="hero-tag">Engineering Simulation Portfolio</p>
+  <h1>Sahildeep<br><em>Singh</em></h1>
+  <p class="hero-sub">
+    M.S. Mechanical Engineering · Wayne State University<br>
+    Specializing in physics-based simulation, structural analysis, and control systems modeling — MATLAB/Simulink, ANSYS, NX, ADAMS, GT-Suite, Python.
+  </p>
+  <div class="hero-links">
+    <a href="#projects" class="btn-primary">View Projects</a>
+    <a href="mailto:hy3730@wayne.edu" class="btn-outline">Contact Me</a>
+    <a href="https://www.linkedin.com/in/sahildeep-singh-aten" target="_blank" class="btn-outline">LinkedIn</a>
+  </div>
+  <div class="hero-scroll">SCROLL TO EXPLORE</div>
+</section>
+
+<!-- ═══ STATS ══════════════════════════════════════════════════════ -->
+<div class="about-strip">
+  <div class="about-stat">
+    <div class="about-stat-num">4+</div>
+    <div class="about-stat-label">Years industry experience<br>in engine design</div>
+  </div>
+  <div class="about-stat">
+    <div class="about-stat-num">3.86</div>
+    <div class="about-stat-label">M.S. GPA at Wayne State<br>University</div>
+  </div>
+  <div class="about-stat">
+    <div class="about-stat-num">2</div>
+    <div class="about-stat-label">SAE peer-reviewed<br>publications</div>
+  </div>
+</div>
+
+<!-- ═══ PROJECTS ═══════════════════════════════════════════════════ -->
+<section class="section" id="projects">
+  <p class="section-label reveal">Selected Work</p>
+  <h2 class="section-title reveal">Simulation &amp; Analysis Projects</h2>
+
+  <div class="projects-grid">
+
+    <!-- ── Card 1: Battery Enclosure ── -->
+    <article class="card reveal">
+      <div class="card-accent"></div>
+      <div class="card-media">
+        <video src="movie_000.mp4" controls loop style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+      </div>
+      <div class="photo-strip">
+        <div class="photo-slot lb-trigger"><img src="Screenshot3.jpg" alt="LS-Dyna result 1"></div>
+        <div class="photo-slot lb-trigger"><img src="Screenshot2.jpg" alt="LS-Dyna result 2"></div>
+        <div class="photo-slot lb-trigger"><img src="Screenshot1.jpg" alt="LS-Dyna result 3"></div>
+      </div>
+      <div class="card-body">
+        <p class="card-tag">LS-Dyna · ANSYS</p>
+        <h3 class="card-title">Li-Ion Battery Enclosure — Structural &amp; Safety Analysis</h3>
+        <ul class="card-bullets">
+          <li>Modal analysis ensured all structural components maintained first natural frequency above 50 Hz (road excitation), preventing resonance under vehicle operating loads.</li>
+          <li>Nail penetration test simulated in LS-Dyna using Electro-Mechanical-Thermal coupling to assess thermal runaway risk and validate enclosure design.</li>
+          <li>10G static loading stress analysis and full crash-load analysis performed to verify structural integrity under extreme boundary conditions.</li>
+        </ul>
+        <div class="card-tools">
+          <span class="tool-tag">LS-Dyna</span>
+          <span class="tool-tag">ANSYS</span>
+          <span class="tool-tag">Crash Analysis</span>
+          <span class="tool-tag">Modal Analysis</span>
+          <span class="tool-tag">FEA</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- ── Card 2: Vehicle Dynamics ── -->
+    <article class="card reveal">
+      <div class="card-accent"></div>
+      <div class="card-media">
+        <video src="rct_KF.mp4" controls loop style="width:100%;height:100%;object-fit:cover;display:block;"></video>
+      </div>
+      <div class="photo-strip">
+        <div class="photo-slot lb-trigger"><img src="Pendulum1.jpg" alt="MATLAB plot 1"></div>
+        <div class="photo-slot lb-trigger"><img src="Pendulum2.jpg" alt="MATLAB plot 2"></div>
+        <div class="photo-slot lb-trigger"><img src="Pendulum3.jpg" alt="MATLAB plot 3"></div>
+      </div>
+      <div class="card-body">
+        <p class="card-tag">MATLAB · Simulink · Simscape</p>
+        <h3 class="card-title">Vehicle Dynamics &amp; Control Systems Modeling</h3>
+        <ul class="card-bullets">
+          <li>Modelled an inverted pendulum on a cart system; conducted design studies comparing standard state-space control with Kalman Filter (KF) and Extended Kalman Filter (EKF) observer designs to evaluate estimation accuracy under noisy sensor conditions.</li>
+          <li>Derived equations of motion for a double spring-mass-damper vehicle dynamics model; applied ODE45 to numerically solve and plot time-domain velocity and displacement responses.</li>
+          <li>Applied Laplace and Transfer Function methods with Bode plot analysis to assess system stability margins and frequency-domain characteristics.</li>
+        </ul>
+        <div class="card-tools">
+          <span class="tool-tag">MATLAB</span>
+          <span class="tool-tag">Simulink</span>
+          <span class="tool-tag">Kalman Filter</span>
+          <span class="tool-tag">EKF</span>
+          <span class="tool-tag">Control Systems</span>
+		  <span class="tool-tag">Simscape</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- ── Card 3: FEA Bracket ── -->
+    <article class="card reveal">
+      <div class="card-accent"></div>
+      
+
+      
+      <div class="photo-strip">
+        <div class="photo-slot lb-trigger"><img src="starter1.jpg" alt="FEA stress contour 1"></div>
+        <div class="photo-slot lb-trigger"><img src="starter2.jpg" alt="FEA stress contour 2"></div>
+		<div class="photo-slot lb-trigger"><img src="bracket22.jpg" alt="FEA stress contour 2"></div>
+		<div class="photo-slot lb-trigger"><img src="bracket23.jpg" alt="FEA stress contour 2"></div>
+		<div class="photo-slot lb-trigger"><img src="bracket21.jpg" alt="FEA stress contour 2"></div>
+      </div>
+      <div class="card-body">
+        <p class="card-tag">ANSYS · NX · HyperMesh</p>
+        <h3 class="card-title">Starter Motor Bracket — FEA Stress &amp; Design Optimization</h3>
+        <ul class="card-bullets">
+          <li>ANSYS software used to simulate actual loadings on a starter motor bracket. Static structural analysis performed with 30G loading applied independently in all three directions to evaluate stress concentrations across meshed regions.</li>
+          <li>Cranking moment impact loads assessed; ANSYS maximum von Mises stress of 179 MPa confirmed below the 200 MPa allowable threshold, validating design safety.</li>
+          
+        </ul>
+		
+		<h3 class="card-title">Redesign the bracket to reduce the stress by at least 10%</h3>
+        <ul class="card-bullets">
+          <li>HypermMesh software used to simulate 500 N loadings on a bracket. Static structural analysis were performed and regions with high stress were identified .</li>
+          <li>Redesigned the bracket geometry in NX using spline-based fill surfaces to add material at high-stress corners and eliminate sharp stress risers — achieving a 35% stress reduction (from ~650 MPa to ~526 MPa) while maintaining original gauge thickness. Mesh convergence study conducted across seven refinement levels (DOF 6,480 → 21,882)..</li>
+          
+        </ul>
+        <div class="card-tools">
+          <span class="tool-tag">ANSYS</span>
+          <span class="tool-tag">NX</span>
+          <span class="tool-tag">HyperMesh</span>
+          <span class="tool-tag">Static Structural</span>
+          <span class="tool-tag">Mesh Convergence</span>
+          <span class="tool-tag">Stress Concentration</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- ── Card 4: Valve Train ── -->
+    <article class="card reveal">
+      <div class="card-accent"></div>
+      
+      <div class="photo-strip">
+        <div class="photo-slot lb-trigger"><img src="engineVT1.jpg" alt="Valve train 1"></div>
+        <div class="photo-slot lb-trigger"><img src="engineVT2.jpg" alt="Valve train 2"></div>
+        <div class="photo-slot lb-trigger"><img src="engineVT3.jpg" alt="Valve train 3"></div>
+      </div>
+      <div class="card-body">
+        <p class="card-tag">MSC ADAMS · PTC Creo</p>
+        <h3 class="card-title">Engine Valve Train — Kinematic &amp; Dynamic Analysis</h3>
+        <ul class="card-bullets">
+          <li>Investigated the Cylinder Activation &amp; Deactivation System (CADS) working mechanism using MSC ADAMS. PTC Creo 3D para-solid model imported to ADAMS with all connections, contacts, and forces defined.</li>
+          <li>Time-based simulation conducted using angular displacement as input (engine RPM not directly accepted); body torque and displacement analyses performed across the operating range to validate CADS kinematics and contact force behavior.</li>
+        </ul>
+        <div class="card-tools">
+          <span class="tool-tag">MSC ADAMS</span>
+          <span class="tool-tag">PTC Creo</span>
+          <span class="tool-tag">Multi-Body Dynamics</span>
+          <span class="tool-tag">Kinematic Analysis</span>
+          <span class="tool-tag">Contact Forces</span>
+        </div>
+      </div>
+    </article>
+
+    <!-- ── Card 5: GT-Power ── -->
+    <article class="card reveal">
+      <div class="card-accent"></div>
+      
+      <div class="photo-strip">
+        <div class="photo-slot lb-trigger"><img src="engineLub1.jpg" alt="GT-Power result 1"></div>
+        <div class="photo-slot lb-trigger"><img src="engineLub2.jpg" alt="GT-Power result 2"></div>
+        <div class="photo-slot lb-trigger"><img src="engineLub3.jpg" alt="GT-Power result 3"></div>
+      </div>
+      <div class="card-body">
+        <p class="card-tag">GT-Suite · GT-Power</p>
+        <h3 class="card-title">Engine Friction Torque & Lubrication System Simulation</h3>
+        <ul class="card-bullets">
+          <li>GT-Power 1D simulation used to model engine friction-torque behavior. Friction contributions from piston rings (first, second, oil), skirt, and main bearings calculated individually; total engine friction torque (Tf) derived as the summation.</li>
+          <li>Boundary condition-based simulation executed from GT-Power's built-in engine friction model; cam bush and gear train friction excluded as negligible contributors for this study scope.</li>
+          <li>Modelled a complete engine lubrication system and executed a Design of Experiments (DOE) to characterize sensitivity of oil pressure and flow distribution to key design parameters.</li>
+        </ul>
+        <div class="card-tools">
+          <span class="tool-tag">GT-Power</span>
+          <span class="tool-tag">GT-Suite</span>
+          <span class="tool-tag">1D Simulation</span>
+          <span class="tool-tag">DOE</span>
+          <span class="tool-tag">Friction Torque</span>
+        </div>
+      </div>
+    </article>
+
+    
+
+  </div>
+</section>
+
+<!-- ═══ CONTACT ════════════════════════════════════════════════════ -->
+<section class="section section-alt" id="contact">
+  <p class="section-label reveal">Get in Touch</p>
+  <h2 class="section-title reveal">Contact</h2>
+  <div class="contact-row reveal">
+    <div class="contact-item">
+      <span class="contact-item-label">Email</span>
+      <a href="mailto:hy3730@wayne.edu" class="contact-item-value">hy3730@wayne.edu</a>
+    </div>
+    <div class="contact-item">
+      <span class="contact-item-label">Phone</span>
+      <span class="contact-item-value">+1 (226) 962-5018</span>
+    </div>
+    <div class="contact-item">
+      <span class="contact-item-label">LinkedIn</span>
+      <a href="https://www.linkedin.com/in/sahildeep-singh-aten" target="_blank" class="contact-item-value">sahildeep-singh-aten</a>
+    </div>
+    <div class="contact-item">
+      <span class="contact-item-label">Location</span>
+      <span class="contact-item-value">Detroit, MI</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>SAHILDEEP SINGH — ENGINEERING SIMULATION PORTFOLIO</span>
+  <span>Wayne State University · M.S. Mechanical Engineering</span>
+</footer>
+
+<script>
+  // ── Scroll reveal ──────────────────────────────────────────
+  const observer = new IntersectionObserver(
+    entries => entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } }),
+    { threshold: 0.08 }
+  );
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  document.querySelectorAll('.card.reveal').forEach((el, i) => { el.style.transitionDelay = (i * 0.08) + 's'; });
+
+  // ── Smooth scroll for hero CTA ──────────────────────────────
+  document.querySelector('a[href="#projects"]').addEventListener('click', e => {
+    e.preventDefault();
+    document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
+  });
+
+  // ── LIGHTBOX ────────────────────────────────────────────────
+  const lb       = document.getElementById('lightbox');
+  const lbImg    = document.getElementById('lb-img');
+  const lbClose  = document.getElementById('lb-close');
+  const lbPrev   = document.getElementById('lb-nav-prev');
+  const lbNext   = document.getElementById('lb-nav-next');
+  const lbCount  = document.getElementById('lb-counter');
+
+  // Collect all clickable image elements (photo slots + card-media imgs)
+  let lbImages = [];
+  let lbIndex  = 0;
+
+  function buildLbImages() {
+    lbImages = [];
+    // photo-slot images
+    document.querySelectorAll('.photo-slot img').forEach(img => lbImages.push(img));
+    // card-media images (if any)
+    document.querySelectorAll('.card-media img').forEach(img => lbImages.push(img));
+  }
+
+  function openLightbox(img) {
+    buildLbImages();
+    lbIndex = lbImages.indexOf(img);
+    showLbImage(lbIndex);
+    lb.classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function showLbImage(i) {
+    const src = lbImages[i].src;
+    const alt = lbImages[i].alt || '';
+    lbImg.src = src;
+    lbImg.alt = alt;
+    lbCount.textContent = (i + 1) + ' / ' + lbImages.length;
+  }
+
+  function closeLightbox() {
+    lb.classList.remove('active');
+    document.body.style.overflow = '';
+    lbImg.src = '';
+  }
+
+  // Attach click to all photo slots
+  document.querySelectorAll('.photo-slot').forEach(slot => {
+    slot.addEventListener('click', () => {
+      const img = slot.querySelector('img');
+      if (img && img.src && !img.src.endsWith('/')) openLightbox(img);
+    });
+  });
+
+  // Attach click to card-media images
+  document.querySelectorAll('.card-media img').forEach(img => {
+    img.addEventListener('click', () => openLightbox(img));
+  });
+
+  // Nav
+  lbPrev.addEventListener('click', e => {
+    e.stopPropagation();
+    lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length;
+    showLbImage(lbIndex);
+  });
+  lbNext.addEventListener('click', e => {
+    e.stopPropagation();
+    lbIndex = (lbIndex + 1) % lbImages.length;
+    showLbImage(lbIndex);
+  });
+
+  // Close on backdrop click
+  lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+  lbClose.addEventListener('click', closeLightbox);
+
+  // Keyboard navigation
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('active')) return;
+    if (e.key === 'Escape')       closeLightbox();
+    if (e.key === 'ArrowLeft')  { lbIndex = (lbIndex - 1 + lbImages.length) % lbImages.length; showLbImage(lbIndex); }
+    if (e.key === 'ArrowRight') { lbIndex = (lbIndex + 1) % lbImages.length; showLbImage(lbIndex); }
+  });
+</script>
+</body>
+</html>
